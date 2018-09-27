@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Ajax Chat</title>
+<script language="javascript">
+
+var waktu=10000;
+function ambilNama(){
+
+document.getElementById('nama').value=prompt("isikan nama");
+
+}
+function move_up() {
+var waktu2=waktu/5;
+    document.getElementById('scroll_clipper').scrollTop = 9999999;
+	setTimeout("move_up()",waktu2);
+  }
+function getXMLHttpRequest(){
+	if(window.ActiveXObject){
+		return new ActiveXObject("Microsoft.XMLHTTP");
+	}else if(window.XMLHttpRequest){
+		return new XMLHttpRequest();	
+	}else alert("Status : Can not create XMLHttpRequest Object");
+}
+var xmlhttp=getXMLHttpRequest();
+function sendRequesta(pageURL,ElementID){
+	var obj=document.getElementById(ElementID);
+	obj.innerHTML='Loading.... please wait.';
+	if(xmlhttp.readyState==4 || xmlhttp.readyState==0){
+		
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				obj.innerHTML=xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open('GET',pageURL,true);
+		xmlhttp.send(null);
+		
+		setTimeout("sendRequesta('ambildata.php','hasil');",waktu);
+	}
+	
+}
+function sendRequest(pageURL,ElementID){
+	var obj=document.getElementById(ElementID);
+	obj.innerHTML='Loading.... please wait.';
+	if(xmlhttp.readyState==4 || xmlhttp.readyState==0){
+		
+		xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState==4 && xmlhttp.status==200){
+				obj.innerHTML=xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open('GET',pageURL,true);
+		xmlhttp.send(null);
+		setTimeout("sendRequesta('ambildata.php','hasil')",10000);
+	}
+	
+}
+function ambil(){
+
+sendRequest('ambildata.php','hasil');
+
+
+}
+function kirim(){
+
+sendRequest('kirim.php?teks='+document.getElementById('kalimat').value+'&nama='+document.getElementById('nama').value,'hasil');
+
+
+}
+</script>
+<style type="text/css">
+<!--
+.style1 {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+.style2 {color: #FFFFFF}
+-->
+</style>
+</head>
+
+<body onload="ambilNama(); ambil(); move_up();">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="11%" rowspan="6" bgcolor="#009933">&nbsp;</td>
+    <td width="77%" height="32" bgcolor="#009933"><div align="center" class="style1">Aplikasi Chat Menggunakan AJAX </div></td>
+    <td width="12%" rowspan="6" bgcolor="#009933">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="98"><div id='scroll_clipper' style='height: 150px; overflow:auto;'><div id="hasil">&nbsp;</div></div></td>
+  </tr>
+  <tr>
+    <td bgcolor="#009933">&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#009933"><span class="style2">Nama</span>
+      <input name="nama" type="text" id="nama" readonly="" /></td>
+  </tr>
+  <tr>
+    <td bgcolor="#009933"><div align="center"><span class="style2">Masukkan Teks
+      </span>
+      <input name="kalimat" type="text" id="kalimat" size="100" />
+        <input type="button" name="Submit" value="Submit" onclick="move_up()" />
+    </div></td>
+  </tr>
+  <tr>
+    <td bgcolor="#009933">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>
